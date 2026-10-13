@@ -1,0 +1,27 @@
+# Terraform
+*.tfstate
+*.tfstate.*
+*.tfvars
+*.tfvars.json
+.terraform/
+.terraform.lock.hcl
+
+# Chaves e Segredos
+*.pem
+*.key
+*.pub
+id_rsa*
+id_ed25519*
+.env
+.env.local
+*.secret
+
+# Ansible
+ansible/inventory.ini
+ansible/hosts
+ansible/.vault_pass
+
+# Logs e temporários
+*.log
+.DS_Store
+Thumbs.db
