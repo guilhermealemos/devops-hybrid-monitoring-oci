@@ -1,0 +1,39 @@
+---
+- name: Deploy da Stack de Monitoramento (Zabbix + PostgreSQL + Grafana)
+  hosts: monitoring_servers
+  become: true
+
+  tasks:
+    - name: Criar diretório da aplicação no servidor remoto
+      file:
+        path: /opt/monitoring-stack
+        state: directory
+        owner: ubuntu
+        group: docker
+        mode: '0775'
+
+    - name: Copiar arquivo de variáveis de ambiente (.env)
+      copy:
+        src: ../docker/.env
+        dest: /opt/monitoring-stack/.env
+        owner: ubuntu
+        group: docker
+        mode: '0600'
+
+    - name: Copiar arquivo docker-compose.yml
+      copy:
+        src: ../docker/docker-compose.yml
+        dest: /opt/monitoring-stack/docker-compose.yml
+        owner: ubuntu
+        group: docker
+        mode: '0644'
+
+    - name: Subir a stack de containers com Docker Compose
+      community.docker.docker_compose_v2:
+        project_src: /opt/monitoring-stack
+        state: present
+      register: compose_output
+
+    - name: Exibir status do deploy
+      debug:
+        var: compose_output
